@@ -1,0 +1,30 @@
+{
+  "name": "{{name}}",
+  "version": "0.1.0",
+  "source": "src/main.js",
+  "main": "dist/{{variable}}.js",
+  "module": "dist/{{variable}}.modern.js",
+  "browser": "dist/{{variable}}.umd.js",
+  "scripts": {
+    "build": "microbundle -f modern,cjs,umd --no-sourcemap",
+    "dev": "microbundle -f modern watch",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "microbundle": "next"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/semencov/{{name}}.git"
+  },
+  "author": "Yuri Sementsov <hello@smcv.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/semencov/{{name}}/issues"
+  },
+  "homepage": "https://github.com/semencov/{{name}}"
+}
