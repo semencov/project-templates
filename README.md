@@ -1,17 +1,7 @@
-# {{name}}
+# {{title}}
 
-WIP - nothing to see here
-
+```sh
+npm install
+npm run build
+# now deploy ./dist folder
 ```
-npm install {{name}}
-```
-
-## Usage
-
-``` js
-const {{name}} = require('{{name}}')
-```
-
-## License
-
-[MIT](LICENSE).

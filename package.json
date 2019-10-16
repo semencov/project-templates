@@ -1,20 +1,30 @@
 {
-  "name": "{{name}}",
-  "version": "0.1.0",
-  "source": "src/main.js",
-  "main": "dist/{{name}}.js",
-  "module": "dist/{{name}}.modern.js",
-  "browser": "dist/{{name}}.umd.js",
+  "private": true,
   "scripts": {
-    "build": "microbundle -f modern,cjs,umd --no-sourcemap",
-    "dev": "microbundle -f modern watch",
-    "size": "size-limit",
-    "test": "jest --passWithNoTests && eslint . && npm run size"
+    "spell": "yaspeller dist/**/*.html",
+    "lint": "eslint . && stylelint src/**/*.sss",
+    "test": "npm run lint & npm run build && size-limit && npm run spell",
+    "clean": "rimraf dist/ .cache",
+    "start": "parcel serve src/index.pug --open",
+    "build": "rimraf dist/ && NODE_ENV=production ./scripts/build"
   },
-  "repository": "semencov/{{name}}",
-  "author": "Yuri Sementsov <hello@smcv.dev>",
-  "license": "MIT",
-  "dependencies": {},
+  "engines": {
+    "node": "^12.0.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^9.6.4",
+    "css-mqpacker": "^7.0.0",
+    "parcel-bundler": "^1.12.4",
+    "postcss": "^7.0.18",
+    "postcss-hexrgba": "^1.0.2",
+    "postcss-media-minmax": "^4.0.0",
+    "postcss-nested": "^4.1.2",
+    "postcss-pxtorem": "^4.0.1",
+    "posthtml": "^0.12.0",
+    "pug": "^2.0.4",
+    "rimraf": "^3.0.0",
+    "sugarss": "^2.0.0"
+  },
   "devDependencies": {
     "@size-limit/file": "^2.1.6",
     "@suburbicode/eslint-config": "^1.0.2",
@@ -29,21 +39,44 @@
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-unicorn": "^12.1.0",
-    "jest": "^24.9.0",
-    "microbundle": "next"
+    "husky": "^3.0.8",
+    "lint-staged": "^9.4.1",
+    "postcss-mixins": "^6.2.2",
+    "stylelint": "^11.1.1",
+    "stylelint-config-recess-order": "^2.0.3",
+    "stylelint-config-standard": "^19.0.0",
+    "stylelint-order": "^3.1.1",
+    "svgo": "^1.3.0",
+    "yaspeller": "^6.0.2"
   },
-  "files": [
-    "dist"
+  "browserslist": [
+    "last 2 versions",
+    "firefox esr",
+    "not dead",
+    "not ie 11",
+    "not ie_mob 11",
+    "not op_mini all",
+    "not op_mob > 0",
+    "not and_qq > 0",
+    "not android > 0"
   ],
-  "size-limit": [
-    {
-      "limit": "9 KB",
-      "path": ["dist/{{name}}.*.js"]
+  "postcss": {
+    "plugins": {
+      "postcss-mixins": {
+        "mixinsDir": "mixins"
+      },
+      "postcss-media-minmax": {},
+      "postcss-nested": {},
+      "postcss-hexrgba": {},
+      "autoprefixer": {},
+      "css-mqpacker": {}
     }
-  ],
+  },
   "eslintConfig": {
     "extends": "@suburbicode/eslint-config/node",
     "rules": {
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-unsafe-regex": "off",
       "node/no-unsupported-features/es-syntax": "off",
       "node/no-unpublished-require": "off",
       "global-require": "off"
@@ -53,5 +86,59 @@
     "node_modules",
     "dist",
     ".cache"
-  ]
+  ],
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-recess-order"
+    ],
+    "rules": {
+      "declaration-block-trailing-semicolon": null,
+      "block-closing-brace-newline-before": null,
+      "block-opening-brace-space-before": null,
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "define-mixin",
+            "mixin"
+          ]
+        }
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint",
+    "*.svg": [
+      "svgo",
+      "git add"
+    ],
+    "*.css": [
+      "stylelint --fix",
+      "git add"
+    ]
+  },
+  "size-limit": [
+    {
+      "name": "Critical",
+      "path": "dist/index.html",
+      "limit": "4 KB"
+    },
+    {
+      "name": "Full",
+      "path": [
+        "dist/*.js"
+      ],
+      "limit": "200 KB"
+    }
+  ],
+  "yaspeller": {
+    "ignoreCapitalization": true,
+    "dictionary": []
+  }
 }

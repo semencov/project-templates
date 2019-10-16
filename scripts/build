@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+
+let { writeFile, readFile, copyFile, unlink } = require('fs').promises;
+let { basename, join } = require('path');
+let posthtml = require('posthtml');
+let Bundler = require('parcel-bundler');
+let crypto = require('crypto');
+
+const SRC = join(__dirname, '..', 'src');
+const DIST = join(__dirname, '..', 'dist');
+
+async function compileAssets() {
+  let indexBundler = new Bundler(join(SRC, 'index.pug'), {
+    sourceMaps: false,
+  });
+  let bundle = await indexBundler.bundle();
+
+  function findAssets(step) {
+    return Array.from(step.childBundles).reduce((all, i) => all.concat(findAssets(i)), [step.name]);
+  }
+
+  let assets = findAssets(bundle);
+
+  return function getAsset(regexp) {
+    return assets.find(i => regexp.test(i));
+  };
+}
+
+async function generateWebManifest(getAsset) {
+  let json = JSON.parse(await readFile(join(SRC, 'base', 'manifest.webmanifest')));
+  json.icons[0].src = '/' + basename(getAsset(/192\..*\.png/));
+  json.icons[1].src = '/' + basename(getAsset(/512\..*\.png/));
+
+  let text = JSON.stringify(json);
+  let hash = crypto
+    .createHash('md5')
+    .update(text)
+    .digest('hex')
+    .slice(0, 8);
+
+  let name = `manifest.${hash}.webmanifest`;
+  await writeFile(join(DIST, name), text);
+
+  return { url: '/' + name, theme: json.theme_color };
+}
+
+let bundler = new Bundler(join(__dirname, 'src', 'index.pug'), {
+  sourceMaps: false,
+});
+
+async function updateHtml(manifest) {
+  let [html] = await Promise.all([
+    readFile(join(DIST, 'index.html'))
+  ]);
+
+  function htmlPlugin(tree) {
+    tree.match({ attrs: { rel: 'icon', sizes: '512x512' } }, () => {
+      return [
+        { tag: 'link', attrs: { rel: 'manifest', href: manifest.url } },
+        { tag: 'meta', attrs: { name: 'theme-color', content: manifest.theme } },
+      ];
+    });
+  }
+
+  let fixed = posthtml()
+    .use(htmlPlugin)
+    .process(html, { sync: true }).html;
+
+  await Promise.all([
+    writeFile(join(DIST, 'index.html'), fixed)
+  ]);
+}
+
+async function build() {
+  let [getAsset] = await Promise.all([
+    compileAssets()
+  ]);
+
+  let webmanifest = await generateWebManifest(getAsset);
+  await updateHtml(webmanifest);
+}
+
+build().catch(e => {
+  process.stderr.write(e.stack + '\n');
+  process.exit(1);
+});
