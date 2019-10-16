@@ -2,29 +2,57 @@
   "name": "{{name}}",
   "version": "0.1.0",
   "source": "src/main.js",
-  "main": "dist/{{variable}}.js",
-  "module": "dist/{{variable}}.modern.js",
-  "browser": "dist/{{variable}}.umd.js",
+  "main": "dist/{{name}}.js",
+  "module": "dist/{{name}}.modern.js",
+  "browser": "dist/{{name}}.umd.js",
   "scripts": {
     "build": "microbundle -f modern,cjs,umd --no-sourcemap",
     "dev": "microbundle -f modern watch",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "size": "size-limit",
+    "test": "jest && eslint . && npm run size"
   },
+  "repository": "semencov/{{name}}",
+  "author": "Yuri Sementsov <hello@smcv.dev>",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "@size-limit/file": "^2.1.6",
+    "@suburbicode/eslint-config": "^1.0.1",
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-es5": "^1.4.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.19.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prefer-let": "^1.0.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-unicorn": "^12.1.0",
+    "jest": "^24.9.0",
     "microbundle": "next"
   },
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/semencov/{{name}}.git"
+  "size-limit": [
+    {
+      "limit": "9 KB",
+      "path": ["dist/{{name}}.*.js"]
+    }
+  ],
+  "eslintConfig": {
+    "extends": "@suburbicode/eslint-config/node",
+    "rules": {
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-unsafe-regex": "off",
+      "node/no-unpublished-require": "off",
+      "global-require": "off"
+    }
   },
-  "author": "Yuri Sementsov <hello@smcv.dev>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/semencov/{{name}}/issues"
-  },
-  "homepage": "https://github.com/semencov/{{name}}"
+  "eslintIgnore": [
+    "node_modules",
+    "dist",
+    ".cache"
+  ]
 }
