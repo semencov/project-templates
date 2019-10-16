@@ -2,7 +2,9 @@
   "name": "{{title}}",
   "short_name": "{{title}}",
   "background_color": "#fff",
-  "theme_color": "#99AAB5",
+  "theme_color": "#99aab5",
+  "start_url": "/",
+  "display": "standalone",
   "icons": [
     {
       "src": "/base/192.png",
