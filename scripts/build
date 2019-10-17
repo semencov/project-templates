@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-let { writeFile, readFile, copyFile, unlink } = require('fs').promises;
+let { writeFile, readFile, unlink } = require('fs').promises;
 let { basename, join } = require('path');
 let posthtml = require('posthtml');
+let postcss = require('postcss');
+let mqpacker = require('css-mqpacker');
 let Bundler = require('parcel-bundler');
 let crypto = require('crypto');
 
@@ -44,16 +46,25 @@ async function generateWebManifest(getAsset) {
   return { url: '/' + name, theme: json.theme_color };
 }
 
-let bundler = new Bundler(join(__dirname, 'src', 'index.pug'), {
-  sourceMaps: false,
-});
+async function getInlineCss(getAsset) {
+  let file = getAsset(/.*\.css/);
+  let css = await readFile(file);
+  let sorted = postcss([mqpacker]).process(css, { from: file, sync: true }).css;
 
-async function updateHtml(manifest) {
-  let [html] = await Promise.all([
-    readFile(join(DIST, 'index.html'))
-  ]);
+  await unlink(file);
+  return { file: basename(file), content: sorted };
+}
+
+async function updateHtml(css, manifest) {
+  let [html] = await Promise.all([readFile(join(DIST, 'index.html'))]);
 
   function htmlPlugin(tree) {
+    tree.match({ attrs: { rel: 'stylesheet', href: `/${css.file}` } }, () => {
+      return [
+        { tag: 'style', content: css.content },
+      ];
+    });
+
     tree.match({ attrs: { rel: 'icon', sizes: '512x512' } }, () => {
       return [
         { tag: 'link', attrs: { rel: 'manifest', href: manifest.url } },
@@ -66,18 +77,16 @@ async function updateHtml(manifest) {
     .use(htmlPlugin)
     .process(html, { sync: true }).html;
 
-  await Promise.all([
-    writeFile(join(DIST, 'index.html'), fixed)
-  ]);
+  await Promise.all([writeFile(join(DIST, 'index.html'), fixed)]);
 }
 
 async function build() {
-  let [getAsset] = await Promise.all([
-    compileAssets()
-  ]);
+  let [getAsset] = await Promise.all([compileAssets()]);
 
   let webmanifest = await generateWebManifest(getAsset);
-  await updateHtml(webmanifest);
+  let css = await getInlineCss(getAsset);
+
+  await updateHtml(css, webmanifest);
 }
 
 build().catch(e => {

@@ -1,0 +1,22 @@
+/*
+  INSET-SPACE: For interface containers.
+  INSET-SQUISH-SPACE: For buttons, form elements, cells.
+  STACK-SPACE: For vertically stacked content.
+  INLINE-SPACE: For things displayed inline.
+*/
+
+@define-mixin inset-space $value
+  padding: $value
+
+@define-mixin inset-squish-space $value
+  padding: calc($value / 1.7 - 1px) $value calc($value / 1.7)
+
+@define-mixin stack-space $value
+  margin-bottom: $value
+  &:last-child
+    margin-bottom: 0
+
+@define-mixin inline-space $value
+  margin-right: $value
+  &:last-child
+    margin-right: 0
