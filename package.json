@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "source": "src/main.js",
   "main": "dist/{{name}}.js",
-  "module": "dist/{{name}}.modern.js",
+  "module": "dist/{{name}}.esm.js",
   "browser": "dist/{{name}}.umd.js",
   "scripts": {
     "build": "microbundle -f modern,cjs,umd --no-sourcemap",
