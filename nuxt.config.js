@@ -1,7 +1,5 @@
-import generate from './generate.js';
+import generate from './generate';
 
-const title = 'Юрий Семенцов';
-const descr = 'Сайт Юрия Семенцова';
 const loading = false;
 
 module.exports = {
