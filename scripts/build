@@ -18,7 +18,7 @@ async function compileAssets () {
   });
   let bundle = await indexBundler.bundle();
 
-  const findAssets = step =>
+  let findAssets = step =>
     Array.from(step.childBundles)
       .reduce((all, i) => all.concat(findAssets(i)), [step.name]);
 
