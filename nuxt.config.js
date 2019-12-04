@@ -12,10 +12,10 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js Demo Site' },
+      { hid: 'description', name: 'description', content: 'Nuxt.js Demo Site' }
     ],
 
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
   buildModules: [
@@ -31,10 +31,11 @@ module.exports = {
           '/*': [
             'Strict-Transport-Security: max-age=31536000; includeSubDomains; preload',
             'X-Content-Type-Options: nosniff',
-            "Content-Security-Policy: connect-src 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'",
-          ],
-        },
-      },
+            'Content-Security-Policy: '
+              + 'connect-src "self"; object-src "none"; frame-ancestors "none"; form-action "none"; base-uri "none"'
+          ]
+        }
+      }
     ],
     [
       'nuxt-netlify-http2-server-push',
@@ -43,27 +44,27 @@ module.exports = {
           { path: '**/*.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' },
           { path: '**/*.woff', as: 'font', type: 'font/woff', crossorigin: 'anonymous' },
           { path: '**/*.css', as: 'style' },
-          { path: '**/*.js', as: 'script' },
-        ],
-      },
-    ],
+          { path: '**/*.js', as: 'script' }
+        ]
+      }
+    ]
   ],
 
   tailwindcss: {
     configPath: '~/tailwind.config.js',
-    cssPath: '~/assets/css/index.pcss',
+    cssPath: '~/assets/css/index.pcss'
   },
 
   optimizedImages: {
     optimizeImages: true,
     defaultImageLoader: 'responsive-loader',
     svgo: {
-      plugins: [{ removeComments: true }],
-    },
+      plugins: [{ removeComments: true }]
+    }
   },
 
   hooks: {
-    generate,
+    generate
   },
 
   build: {
@@ -79,23 +80,23 @@ module.exports = {
         'postcss-pxtorem': {
           propList: ['*'],
           selectorBlackList: ['html'],
-          rootValue: 17,
-        },
-      },
+          rootValue: 17
+        }
+      }
     },
 
-    extend(config, { isDev, isClient }) {
+    extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /(node_modules)/,
+          exclude: /(node_modules)/
         });
 
         // config.devtool = '#source-map'
         config.devtool = 'eval-source-map'; // create sourcemaps
       }
-    },
-  },
+    }
+  }
 };

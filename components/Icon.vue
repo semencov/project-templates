@@ -1,5 +1,5 @@
 <template>
-  <span :aria-label="ariaLabel" v-html="svg"></span>
+  <span :aria-label="ariaLabel" v-html="svg" />
 </template>
 
 <script>
@@ -9,33 +9,34 @@
     name: 'Icon',
     props: {
       name: {
+        type: String,
         required: true,
-        default: 'settings',
+        default: 'settings'
       },
       ariaLabel: {
         type: String,
-        default: 'icon',
+        default: 'icon'
       },
       size: {
         type: String,
         default: 'medium',
         validator: value => {
           return value.match(/(small|medium|large)/);
-        },
-      },
+        }
+      }
     },
 
-    data() {
+    data () {
       return {
         svg: require(`!!raw-loader!@/assets/icons/${this.name}.svg`).default
       };
     },
 
-    mounted() {
+    mounted () {
       this.$el.firstChild.className = classNames('icon', `icon--${this.size}`, `icon--${this.name}`);
       this.$el.firstChild.removeAttribute('height');
       this.$el.firstChild.removeAttribute('width');
-    },
+    }
   };
 </script>
 

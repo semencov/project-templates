@@ -1,39 +1,39 @@
 * {
   position: relative;
-  padding: 0;
   margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  font-style: inherit;
-  font-weight: inherit;
-  line-height: inherit;
+  padding: 0;
   color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  line-height: inherit;
   outline: 0;
 }
 
 *,
-::after,
-::before {
+:after,
+:before {
   box-sizing: border-box;
   border: 0 solid theme('borderColor.n600');
 }
 
 html {
-  font-family: theme('fontFamily.body');
-  font-size: theme('fontSize.m');
-  hyphens: auto;
-  line-height: theme('lineHeight.md');
   color: rgba(theme('textColor.n1000'), 0.95);
+  font-size: theme('fontSize.m');
+  font-family: theme('fontFamily.body');
+  line-height: theme('lineHeight.md');
   overflow-wrap: break-word;
+  hyphens: auto;
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-kerning: normal;
-  font-feature-settings: "kern", "liga", "clig", "calt";
+  font-feature-settings: 'kern', 'liga', 'clig', 'calt';
   scroll-behavior: smooth;
 
-  &[lang="ru"] {
-    quotes: "«" "»" "„" "“";
+  &[lang='ru'] {
+    quotes: '«' '»' '„' '“';
   }
 }
 
@@ -51,8 +51,8 @@ button,
 input,
 select {
   padding: 0;
-  line-height: inherit;
   color: inherit;
+  line-height: inherit;
 }
 
 a::-moz-focus-inner,
@@ -66,7 +66,7 @@ button:focus {
 }
 
 a:active,
-a:active::before {
+a:active:before {
   transition: none;
 }
 
@@ -92,7 +92,8 @@ svg {
 
 @media (prefers-reduced-motion: reduce) {
   *,
-  ::before {
+  :before,
+  :after {
     transition: none !important;
   }
 }
