@@ -31,7 +31,7 @@
   "devDependencies": {
     "@size-limit/file": "^2.2.1",
     "@smcv/eslint-config": "^1.1.5",
-    "@smcv/stylelint-config": "^1.0.5",
+    "@smcv/stylelint-config": "^1.0.7",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-es5": "^1.4.1",
@@ -117,6 +117,7 @@
       ],
       "declaration-no-important": null,
       "property-no-unknown": null,
+      "plugin/no-low-performance-animation-properties": null,
       "suitcss/custom-property-no-outside-root": null
     },
     "ignoreFiles": [
