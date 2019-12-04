@@ -3,6 +3,7 @@
   "scripts": {
     "spell": "yaspeller dist/**/*.html",
     "lint": "eslint . && stylelint src/**/*.sss",
+    "lint:fix": "eslint . --fix && stylelint src/**/*.sss --fix",
     "test": "npm run lint & npm run build && size-limit && npm run spell",
     "clean": "rimraf dist/ .cache",
     "start": "parcel serve src/index.pug --open",
