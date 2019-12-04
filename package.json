@@ -118,7 +118,10 @@
       "declaration-no-important": null,
       "property-no-unknown": null,
       "suitcss/custom-property-no-outside-root": null
-    }
+    },
+    "ignoreFiles": [
+      "dist/**"
+    ]
   },
   "husky": {
     "hooks": {
