@@ -1,1 +1,1 @@
-require('./base/base')
+require('./base/base');
