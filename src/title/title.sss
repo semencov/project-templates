@@ -1,0 +1,72 @@
+.title
+  line-height: 1.2
+  color: var(--base-title)
+
+h1.title
+  @mixin no-mobile
+    margin-top: 42px
+    margin-bottom: 24px
+    font-size: 48px
+
+  @mixin mobile
+    margin-top: 24px
+    margin-bottom: 24px
+    font-size: 24px
+
+h2.title
+  @mixin no-mobile
+    margin-top: 42px
+    margin-bottom: 24px
+    font-size: 24px
+
+  @mixin mobile
+    margin-top: 24px
+    margin-bottom: 21px
+    font-size: 18px
+
+  code
+    font-size: 21px
+
+    @mixin mobile
+      font-size: 15px
+
+h3.title
+  font-size: inherit
+
+  @mixin no-mobile
+    margin-top: 24px
+    margin-bottom: 21px
+
+  @mixin mobile
+    margin-top: 21px
+    margin-bottom: 18px
+
+a.title_link
+  position: relative
+
+  &:hover
+    background: transparent
+
+    @mixin thin-link
+
+.title_link::before
+  @mixin no-mobile
+    position: absolute
+    top: calc(50% - 12px)
+    left: calc(-24px - 15px)
+    display: none
+    width: 24px
+    height: 24px
+    content: ""
+    background-image: url(./link.svg)
+    background-size: 100%
+
+    @mixin dark
+      filter: invert()
+
+.title_link:hover::before
+  @mixin no-mobile
+    display: block
+
+.title_extra
+  opacity: 0.4
