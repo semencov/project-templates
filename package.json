@@ -16,19 +16,9 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@size-limit/file": "^2.2.1",
-    "@smcv/eslint-config": "^1.1.5",
-    "eslint": "^6.7.2",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-es5": "^1.4.1",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.1.1",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-prefer-let": "^1.0.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^14.0.1",
+    "@size-limit/file": "^4.0.0",
+    "@smcv/eslint-config": "^2.0.1",
+    "eslint": "^6.8.0",
     "jest": "^24.9.0",
     "microbundle": "next"
   },
@@ -48,7 +38,7 @@
     }
   ],
   "eslintConfig": {
-    "extends": "@smcv/eslint-config/node",
+    "extends": "@smcv/eslint-config",
     "rules": {
       "node/no-unsupported-features/es-syntax": "off",
       "node/no-unpublished-require": "off",
